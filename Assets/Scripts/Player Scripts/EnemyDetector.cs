@@ -60,9 +60,9 @@ public class EnemyDetector : MonoBehaviour
 
         //targetTransform = targetTransform.GetComponent<EnemyController>().CenterTransform;
 
-        if(targetTransform != null) {
-            targetTransform = targetTransform.GetComponent<EnemyController>().CenterTransform;
-        }
+        //if(targetTransform != null) {
+        //    targetTransform = targetTransform.GetComponent<EnemyController>().CenterTransform;
+        //}
 
         //if (targetTransform != null) Debug.Log("Enemy Detector :: return Transform name= " + targetTransform.name);
         return targetTransform;

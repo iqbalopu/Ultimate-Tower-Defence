@@ -12,7 +12,7 @@ public class WeaponController : MonoBehaviour
     public Transform muzzleTransform;
     private float fireCountDown = 0f;
     private bool isActive;
-    
+    public GameObject MuzzleFlash;
     
 
     private void Awake() {
@@ -56,24 +56,32 @@ public class WeaponController : MonoBehaviour
         RotateBody.rotation = Quaternion.Euler(0f, rotation.y, 0f);
         //Debug.Log("Rotating Rotate body of " + thisWeapon.Name);
         if(fireCountDown <= 0) {
-            Shoot();
+            Shoot(dir);
             fireCountDown = PlayerGamePlayController.Instance.DivideCount / thisWeapon.FireRate;
         }
 
         fireCountDown -= Time.deltaTime;
     }
 
-    private void Shoot() {
+    private void Shoot(Vector3 direction) {
         Bullet bullet = PlayerGamePlayController.Instance.GetBulletToShoot();
-        Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
         if(bullet != null) {
+            CancelInvoke("HideFlash");
+            HideFlash();
             bullet.transform.position = muzzleTransform.position;
-            bullet.SetTargetTransform(currentTargetTransform);
+            bullet.SetTargetTransform(null);
             //Vector3 direction = currentTargetTransform.position - bullet.transform.position;
             bullet.SetBulletDamage(thisWeapon.AttackDamage);
             bullet.gameObject.SetActive(true);
+            bullet.ShootSelf(direction);
+            MuzzleFlash.SetActive(true);
+            Invoke("HideFlash", 0.3f);
             //bulletRb.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
         }
+    }
+
+    private void HideFlash() {
+        MuzzleFlash.SetActive(false);
     }
 
     public void SetPositionofWeapon(Transform pos) {

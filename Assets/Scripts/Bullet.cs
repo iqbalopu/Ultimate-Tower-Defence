@@ -25,35 +25,36 @@ public class Bullet : MonoBehaviour
         return Damage;
     }
 
-    private void Update() {
-        if(target == null) {
-            this.ResetBullet();
-            return;
-        }
+    //private void Update() {
+    //    if(target == null) {
+    //        this.ResetBullet();
+    //        return;
+    //    }
 
-        //Vector3 distance = Vector3.Distance()
-        Vector3 tempTargetPos = new Vector3(target.position.x, target.position.y + 0.3f, target.position.z);
-        Vector3 dir = tempTargetPos - transform.position;
-        float distanceThisFrame = PlayerGamePlayController.Instance.bulletSpeed * Time.deltaTime;
+    //    //Vector3 distance = Vector3.Distance()
+    //    Vector3 tempTargetPos = new Vector3(target.position.x, target.position.y + 0.3f, target.position.z);
+    //    Vector3 dir = tempTargetPos - transform.position;
+    //    float distanceThisFrame = PlayerGamePlayController.Instance.bulletSpeed * Time.deltaTime;
 
-        if (dir.magnitude <= distanceThisFrame) {
-            HitTarget();
-            return;
-        }
+    //    if (dir.magnitude <= distanceThisFrame) {
+    //        HitTarget();
+    //        return;
+    //    }
 
-        transform.Translate(dir.normalized * distanceThisFrame, Space.World);
-        transform.LookAt(target);
-    }
+    //    transform.Translate(dir.normalized * distanceThisFrame, Space.World);
+    //    transform.LookAt(target);
+    //}
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("Path") || other.CompareTag("Obstacle")) {
             BlastParticle bp = PlayerGamePlayController.Instance.GetParticleToBlast();
             bp.PlayParticle(this.transform);
+            this.ResetBullet();
         }
     }
 
-    public void ShootSelf(Transform targetTransform) {
-        bulletRB.velocity = new Vector3(targetTransform.position.x, targetTransform.position.y, targetTransform.position.z) * PlayerGamePlayController.Instance.bulletSpeed;
+    public void ShootSelf(Vector3 direction) {
+        bulletRB.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
     }
 
     public void HitTarget() {
