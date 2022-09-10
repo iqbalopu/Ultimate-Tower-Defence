@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce20016ec4e5a524ba258261f3743849, type: 3}
+  m_Name: weapon_FlameThrower
+  m_EditorClassIdentifier: 
+  Name: Flammy Boy
+  Level: 2
+  Health: 100
+  FireRate: 0.9
+  AttackDamage: 90
+  WeaponID: 2
+  RangeRadius: 8
+  weaponPrefab: {fileID: 4411584557162090691, guid: cf9e0a2a7bfb564448bed59886f2bc05, type: 3}
+  damageType: 1
+  turretImage: {fileID: 21300000, guid: e3430a041b6e0d14b843b750d3451f67, type: 3}
+  WeaponCost: 100

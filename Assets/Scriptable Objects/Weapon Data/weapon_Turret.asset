@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce20016ec4e5a524ba258261f3743849, type: 3}
+  m_Name: weapon_Turret
+  m_EditorClassIdentifier: 
+  Name: Brute Turret
+  Level: 5
+  Health: 200
+  FireRate: 4
+  AttackDamage: 15
+  WeaponID: 6
+  RangeRadius: 8
+  weaponPrefab: {fileID: 1234873974475181793, guid: 9b5c4427680fd7b4e97765ccf8041135, type: 3}
+  damageType: 1
+  turretImage: {fileID: 21300000, guid: 40e6b8bc6c240e44484293d1a3f80fb8, type: 3}
+  WeaponCost: 100

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce20016ec4e5a524ba258261f3743849, type: 3}
+  m_Name: weapon_Barrel
+  m_EditorClassIdentifier: 
+  Name: Super Canon
+  Level: 5
+  Health: 200
+  FireRate: 3
+  AttackDamage: 20
+  WeaponID: 1
+  RangeRadius: 8
+  weaponPrefab: {fileID: 6448303965797162006, guid: ff0ebdbc1e9d8164d93cbe1fbc24a081, type: 3}
+  damageType: 2
+  turretImage: {fileID: 21300000, guid: a425c2d749f0c9e4f808dea1850005a4, type: 3}
+  WeaponCost: 100
