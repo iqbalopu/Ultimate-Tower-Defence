@@ -40,6 +40,10 @@ public class PlayerGamePlayController : MonoBehaviour
     private int BaseLayer;
     private int WeaponLayer;
     private bool IsShowingBaseHighlight;
+    
+    
+
+
 
     private void Awake() {
         if(Instance == null) {
@@ -77,6 +81,8 @@ public class PlayerGamePlayController : MonoBehaviour
             }
         }
     }
+
+
 
     private void ToggleWeaponUI(bool value) {
         WeaponUIParent.gameObject.SetActive(value);
