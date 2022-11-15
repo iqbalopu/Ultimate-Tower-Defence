@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,15 @@ public class CameraMove : MonoBehaviour
     public float MinLimitX;
     public float MaxLimitZ;
     public float MinLimitZ;
+    private Camera thisCamera;
+    private float touchDist = 0;
+    private float lastDist = 0;
+    public float MaxZoom;
+    public float MinZoom;
+    private void Awake () {
+        thisCamera = GetComponent<Camera> ();
+    }
+
     // Start is called before the first frame update
     void Start() {
 
@@ -52,6 +62,9 @@ public class CameraMove : MonoBehaviour
             }
             
         }
+        
+        
+            
 #elif UNITY_ANDROID
 
         if(Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began) {
@@ -86,6 +99,29 @@ public class CameraMove : MonoBehaviour
             }
 
         }
+        if (Input.touchCount == 2)
+         {
+             Touch touch1 = Input.GetTouch(0);
+             Touch touch2 = Input.GetTouch(1);
+     
+             if (touch1.phase == TouchPhase.Began && touch2.phase == TouchPhase.Began)
+             {
+                 lastDist = Vector2.Distance(touch1.position, touch2.position);
+             }
+     
+             if (touch1.phase == TouchPhase.Moved && touch2.phase == TouchPhase.Moved)
+             {
+                 float newDist = Vector2.Distance(touch1.position, touch2.position);
+                 touchDist = lastDist - newDist;
+                 lastDist = newDist;
+     
+                 // Your Code Here
+                 float tempView = Camera.main.fieldOfView + touchDist * 0.1f;
+                 if (tempView > MaxZoom || tempView < MinZoom) {
+                     thisCamera.fieldOfView = tempView;
+                 }
+             }
+         }
 #endif
 
     }

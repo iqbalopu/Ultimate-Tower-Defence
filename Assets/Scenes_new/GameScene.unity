@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2191,7 +2191,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2684,7 +2684,7 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: 100
   m_ChildAlignment: 7
   m_StartCorner: 0
   m_StartAxis: 0
@@ -3099,10 +3099,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1154288156}
     m_Modifications:
-    - target: {fileID: 444758838179276323, guid: 36321ba21a0ede64883630a48821396f, type: 3}
-      propertyPath: ThisWeapon
-      value: 
-      objectReference: {fileID: 11400000, guid: 366b32ad383b1a2419b86906223d2065, type: 2}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3173,7 +3169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3252,7 +3248,7 @@ MonoBehaviour:
   bulletParentTransform: {fileID: 409185264}
   turretParent: {fileID: 2041948441}
   bulletPrefab_: {fileID: 4505389397749708907, guid: ba8c2692992f03847b705ec49b0189c3, type: 3}
-  blastParticle: {fileID: 100000, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
+  blastParticle: {fileID: 9195730818009432564, guid: 27efe60e31259f04eb483a254871230a, type: 3}
   particleparent: {fileID: 217376091}
   scoreText: {fileID: 2051598012}
   gemText: {fileID: 690712240}
@@ -3844,7 +3840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4129062509753051291, guid: 36321ba21a0ede64883630a48821396f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3999,7 +3995,7 @@ MonoBehaviour:
   uiGroup: {fileID: 1710315650}
   exitGameButton: {fileID: 850907185}
   turretSmoothFactor: 9
-  CurrentShootStyle: 0
+  CurrentShootStyle: 1
 --- !u!4 &1837116613
 Transform:
   m_ObjectHideFlags: 0
@@ -24552,7 +24548,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 35
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -24639,6 +24635,8 @@ MonoBehaviour:
   MinLimitX: -100
   MaxLimitZ: 100
   MinLimitZ: -100
+  MaxZoom: 70
+  MinZoom: 35
 --- !u!1001 &8616975062486370096
 PrefabInstance:
   m_ObjectHideFlags: 0
