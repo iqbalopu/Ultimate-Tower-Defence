@@ -13,6 +13,13 @@ public class BlastParticle : MonoBehaviour
         Invoke("ResetParticle", PlayerGamePlayController.Instance.particleTimeOut);
     }
 
+    public void PlayParticle (Vector3 pos) {
+        this.transform.position = pos;
+        this.gameObject.SetActive(true);
+        thisParticle.Play();
+        Invoke("ResetParticle", PlayerGamePlayController.Instance.particleTimeOut);
+    }
+
     private void ResetParticle() {
         this.gameObject.SetActive(false);
         this.transform.localPosition = Vector3.zero;

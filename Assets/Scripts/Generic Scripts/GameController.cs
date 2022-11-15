@@ -11,6 +11,12 @@ public class GameController : MonoBehaviour
     public CanvasGroup uiGroup;
     public Button exitGameButton;
     public float turretSmoothFactor;
+    public enum ShootStyle {
+        OBJECT_POOLING,
+        RAYCAST
+    }
+
+    public ShootStyle CurrentShootStyle;
 
     public enum GameState {
         MENU,
@@ -65,6 +71,7 @@ public class GameController : MonoBehaviour
 
     public void ExitGame() {
         waveController.ResetWave();
+        waveController.ResetGame();
         playerController.ResetTurrets();
         playerController.ToggleScoreCard(false);
         playerController.ToggleGemObject(false);

@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: enemy_Noob
   m_EditorClassIdentifier: 
   Name: Noobie
-  Level: 0
-  MoveSpeed: 0
-  Health: 0
-  AttackDamage: 0
+  Level: 1
+  MoveSpeed: 10
+  Health: 400
+  AttackDamage: 30
   EnemyWeaponType: 0
   attackType: 0
-  killRewardCash: 0
-  killRewardXP: 0
-  EnemyId: 0
-  AttackRate: 0
-  enemyPrefab: {fileID: 0}
+  killRewardScore: 200
+  killRewardGem: 20
+  EnemyId: 5
+  AttackRate: 7
+  enemyPrefab: {fileID: 823873966101742301, guid: b4f0d5add3582844aac4bf54481d9039, type: 3}
   healthBarGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key0: {r: 0.03604484, g: 0.8490566, b: 0.093552046, a: 1}
+    key1: {r: 0.9622642, g: 0.031772893, b: 0.031772893, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}

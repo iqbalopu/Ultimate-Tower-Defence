@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour
 {
-    public Transform currentTargetTransform;
+    [SerializeField]
+    private Transform currentTargetTransform;
     public Weapon thisWeapon;
-    public Transform RotateBody;
-    private int CurrentHealth;
     public EnemyDetector detector;
-    public Transform muzzleTransform;
+    [SerializeField] private Transform RotateBody;
+    [SerializeField] private Transform muzzleTransform;
+    [SerializeField] private GameObject MuzzleFlash;
+    [SerializeField] private LayerMask Mask;
+    [SerializeField] private TrailRenderer bulletTrail;
     private float fireCountDown = 0f;
     private bool isActive;
-    public GameObject MuzzleFlash;
-    
+    private int CurrentHealth;
 
     private void Awake() {
         //if (thisWeapon != null) InitializeWeapon(thisWeapon);
@@ -45,6 +49,7 @@ public class WeaponController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if(!GameController.Instance.IsGameRunning()) return;
         if (!isActive) return;
         if (currentTargetTransform == null) {
             return;
@@ -64,20 +69,59 @@ public class WeaponController : MonoBehaviour
     }
 
     private void Shoot(Vector3 direction) {
-        Bullet bullet = PlayerGamePlayController.Instance.GetBulletToShoot();
-        if(bullet != null) {
-            CancelInvoke("HideFlash");
-            HideFlash();
-            bullet.transform.position = muzzleTransform.position;
-            bullet.SetTargetTransform(null);
-            //Vector3 direction = currentTargetTransform.position - bullet.transform.position;
-            bullet.SetBulletDamage(thisWeapon.AttackDamage);
-            bullet.gameObject.SetActive(true);
-            bullet.ShootSelf(direction);
-            MuzzleFlash.SetActive(true);
-            Invoke("HideFlash", 0.3f);
-            //bulletRb.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
+        if (GameController.Instance.CurrentShootStyle == GameController.ShootStyle.OBJECT_POOLING) {
+            Bullet bullet = PlayerGamePlayController.Instance.GetBulletToShoot();
+            if(bullet != null) {
+                CancelInvoke("HideFlash");
+                HideFlash();
+                bullet.transform.position = muzzleTransform.position;
+                bullet.SetTargetTransform(null);
+                Vector3 directionTemp = currentTargetTransform.position - bullet.transform.position;
+                directionTemp.Normalize();
+                bullet.SetBulletDamage(thisWeapon.AttackDamage);
+                bullet.gameObject.SetActive(true);
+                bullet.ShootSelf(directionTemp);
+                MuzzleFlash.SetActive(true);
+                Invoke("HideFlash", 0.2f);
+                //bulletRb.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
+            }
+        }else if (GameController.Instance.CurrentShootStyle == GameController.ShootStyle.RAYCAST) {
+            //Another way- the raycastWay
+            if (Physics.Raycast (muzzleTransform.position, direction, out RaycastHit hit, float.MaxValue)) {
+                // Debug.Log("Hitting Enemy "+hit.transform.tag);
+                if (hit.transform.CompareTag ("Enemy")) {
+                    if (!hit.transform.GetComponent<EnemyController> ().IsEnemyDead ()) {
+                        TrailRenderer trail = Instantiate (bulletTrail, muzzleTransform.position, Quaternion.identity);
+                        MuzzleFlash.SetActive(true);
+                        Invoke("HideFlash", 0.2f);
+                        StartCoroutine (SpawnTrail (trail, hit));
+                    }
+                }
+            }
         }
+    }
+
+    private Vector3 GetDirection () {
+        return muzzleTransform.forward;
+    }
+
+    IEnumerator SpawnTrail (TrailRenderer trail, RaycastHit hit) {
+        float time = 0;
+        Vector3 startPos = trail.transform.position;
+        while (time < 1) {
+            trail.transform.position = Vector3.Lerp(startPos,hit.point, time);
+            time += Time.deltaTime / trail.time;
+            yield return null;
+        }
+
+        trail.transform.position = hit.point;
+        EnemyController ec =  hit.transform.GetComponent<EnemyController>();
+        if (ec != null) {
+            ec.DecreaseHealth (thisWeapon.AttackDamage);
+            BlastParticle bp = PlayerGamePlayController.Instance.GetParticleToBlast();
+            bp.PlayParticle(hit.point);
+        }
+        Destroy(trail.gameObject, trail.time);
     }
 
     private void HideFlash() {

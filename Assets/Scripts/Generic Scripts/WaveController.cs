@@ -13,6 +13,7 @@ public class WaveController : MonoBehaviour {
     private List<EnemyController> enemyPool =  new List<EnemyController>();
     public int poolCount;
     public float waitBeforeGameStart;
+    [Range(0f, 5f)]public float IntervalInbetweenEnemies;
 
     // Start is called before the first frame update
     void Start() {
@@ -23,20 +24,30 @@ public class WaveController : MonoBehaviour {
         //PlayerGamePlayController.Instance.SetTurretUI();
         PlayerGamePlayController.Instance.ToggleScoreCard(true);
         PlayerGamePlayController.Instance.ToggleGemObject(true);
-        InvokeRepeating("ReleaseWave", waitBeforeGameStart, WaitBeforeNextWave);
+        InvokeRepeating("Release", waitBeforeGameStart, WaitBeforeNextWave);
 
     }
 
-    private void ReleaseWave() {
-        for (int i = 0; i < enemyPerWave; i++) {
+    private void Release () {
+        StartCoroutine (ReleaseWave ());
+    }
+
+    IEnumerator ReleaseWave () {
+        int temp = 0;
+        while (temp<enemyPerWave) {
+            Debug.Log("Temp Value= "+temp);
             EnemyController eC = GetEnemy();
             if (eC == null) break;
-            float rand = Random.Range(MinXValue, MaxXValue);
-            Vector3 startPos = new Vector3(rand, startPoint.position.y, startPoint.position.z);
-            float randXpos = Random.Range(MinXValue, MaxXValue);
-            eC.SetTargetAndStartPosition(new Vector3(randXpos, targetTransform.position.y, targetTransform.position.z), startPos);
+            float tempRand = Random.Range (MinXValue, MaxXValue);
+            Vector3 startPos = new Vector3(tempRand, startPoint.position.y, startPoint.position.z);
+            eC.ResetEnemy();
+            eC.SetTargetAndStartPosition(new Vector3(tempRand, targetTransform.position.y, targetTransform.position.z), startPos);
+            // eC.InitializeDestination();
             eC.ToggleEnemy(true);
             eC.StartEnemyMovement();
+            temp++;
+            yield return new WaitForSeconds (IntervalInbetweenEnemies);
+            
         }
     }
 
@@ -56,7 +67,7 @@ public class WaveController : MonoBehaviour {
         for (int i = 0; i < poolCount; i++) {
             int randomIndex = Random.Range(0, enemyPrefabs.Length);
             Enemy temp = enemyPrefabs[randomIndex];
-            GameObject g = Instantiate(temp.enemyPrefab, enemyParent.position, Quaternion.identity, enemyParent);
+            GameObject g = Instantiate(temp.enemyPrefab, enemyParent.position, enemyParent.rotation, enemyParent);
             EnemyController eCon = g.GetComponent<EnemyController>();
             eCon.ToggleEnemy(false);
             eCon.InitializeEnemyDetails(temp);
@@ -69,5 +80,9 @@ public class WaveController : MonoBehaviour {
         for (int i = 0; i < enemyPool.Count; i++) {
             enemyPool[i].ResetEnemy();
         }
+    }
+
+    public void ResetGame () {
+        CancelInvoke("Release");
     }
 }

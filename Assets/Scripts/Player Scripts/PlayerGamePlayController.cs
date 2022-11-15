@@ -75,7 +75,8 @@ public class PlayerGamePlayController : MonoBehaviour
             if (hit) {
                 if (hitInfo.transform.gameObject.layer == BaseLayer) {
                     Base currBase = hitInfo.transform.GetComponent<Base>();
-                    CheckAndShowWeaponsToDisplayForCurrBase(currBase);
+                    Debug.LogError("OPU :: hit object= "+hitInfo.transform.name);
+                    if(currBase is not null) CheckAndShowWeaponsToDisplayForCurrBase(currBase);
                     //turretParent.position = hitInfo.transform.GetComponent<Base>().GetTurretPosFromBase();
                 }
             }
@@ -212,7 +213,7 @@ public class PlayerGamePlayController : MonoBehaviour
     public void ResetTurrets() {
         if (playerTurrets.Count == 0) return;
         for (int i = 0; i < playerTurrets.Count; i++) {
-            playerTurrets[i].ResetTurret();
+            Destroy(playerTurrets[i].gameObject);
         }
     }
 

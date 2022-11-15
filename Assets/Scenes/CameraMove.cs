@@ -20,6 +20,7 @@ public class CameraMove : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        if(!GameController.Instance.IsGameRunning()) return;
         //only move for z and x axis
 #if  UNITY_EDITOR
         if (Input.GetMouseButtonDown(0)) {
@@ -37,7 +38,6 @@ public class CameraMove : MonoBehaviour
         if (clicked_) {
             if(lastPosition != Vector3.zero) {
                 Vector2 Direction = (lastPosition - Input.mousePosition) * 0.5f;
-                Debug.Log(Direction);
                 float xValue = transform.position.x + (Direction.x / 10);
                 float zValue = transform.position.z + (Direction.y / 10);
                 if(zValue > MaxLimitZ || zValue < MinLimitZ) {

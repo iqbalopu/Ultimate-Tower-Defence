@@ -9,10 +9,12 @@ public class EnemyController : MonoBehaviour {
     private NavMeshAgent navAgent;
     private Vector3 targetPosition;
     private Enemy enemyObject;
-    private Animator enemyAnimator;
+    public Animator enemyAnimator;
     private Rigidbody enemyRB;
     public Image healthBar;
     public Transform CenterTransform;
+    public ShaderController orcShader;
+    private bool isDead = false;
     public enum EnemyStatus {
         IDLE,
         MOVING,
@@ -34,7 +36,6 @@ public class EnemyController : MonoBehaviour {
 
     private void Awake() {
         enemyRB = GetComponent<Rigidbody>();
-        enemyAnimator = GetComponent<Animator>();
         navAgent = GetComponent<NavMeshAgent>();
         if(enemyObject != null) InitializeEnemyDetails(enemyObject);
     }
@@ -43,18 +44,26 @@ public class EnemyController : MonoBehaviour {
         enemyRB.isKinematic = false;
         navAgent.enabled = true;
         navAgent.speed = enemyObject.MoveSpeed;
+        this.Run();
         navAgent.SetDestination(targetPosition);
         currentStatus = EnemyStatus.MOVING;
-        this.Walk();
+        
+        // this.Walk();
     }
 
     public float ConvertRange(float RangeACurrentValue, float RangeAMax, float RangeAMin, float RangeBMax, float RangeBMin) {
         return (((RangeACurrentValue - RangeAMin) * (RangeBMax - RangeBMin)) / (RangeAMax - RangeAMin)) + RangeBMin;
     }
 
+    public bool IsEnemyDead () {
+        return isDead;
+    }
+
     public void SetTargetAndStartPosition(Vector3 target, Vector3 startPos) {
+        // Debug.LogError("OPU :: SetTargetAndStartPosition :: current pos= "+this.transform.position+", startpos= "+startPos+", curr local pos= "+transform.localPosition);
         targetPosition = target;
         this.transform.position = startPos;
+        // Debug.LogError("OPU :: SetTargetAndStartPosition :: After setting :: current pos= "+this.transform.position+", startpos= "+startPos+", curr local pos= "+transform.localPosition);
     }
     
 
@@ -66,8 +75,12 @@ public class EnemyController : MonoBehaviour {
 
     public void StartMovementAfterAttacking() {
         navAgent.isStopped = false;
-        this.Walk();
+        this.
         currentStatus = EnemyStatus.MOVING;
+    }
+
+    public void InitializeDestination () {
+        navAgent.SetDestination (targetPosition);
     }
 
     public void InitializeEnemyDetails(Enemy eComponent) {
@@ -85,6 +98,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     public void DecreaseHealth(int damage) {
+        if(isDead) return;
         StopCoroutine(ReduceHealthBar());
         this.SetHealthbarValue(this.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f));
         float remainingHealth = CurrentHealth - (float)damage;
@@ -93,10 +107,14 @@ public class EnemyController : MonoBehaviour {
             healthBar.enabled = false;
             this.SetHealthbarValue(1f);
             CurrentHealth = 0;
+            // enemyObject.SetEnemyDead(true);
+            isDead = true;
             this.Die();
-            enemyObject.SetStatus(true);
-            navAgent.isStopped = true;
+            // navAgent.enabled = false;
+            // navAgent.isStopped = true;
+            navAgent.speed = 0f;
             PlayerGamePlayController.Instance.IncreaseScore(enemyObject.killRewardScore, enemyObject.killRewardGem);
+            // Debug.Log("1-->");
             StartCoroutine(EnemyDead());
             return;
         } else {
@@ -106,8 +124,10 @@ public class EnemyController : MonoBehaviour {
     }
 
     IEnumerator EnemyDead() {
-        yield return new WaitForSeconds(1.5f);
-        EnemyDied();
+        if(orcShader is not null) orcShader.ShowDeathShade();
+        yield return new WaitForSeconds(1.3f);
+        // Debug.Log("3-->");
+        SetEnemyDied();
     }
 
      IEnumerator ReduceHealthBar() {
@@ -127,19 +147,23 @@ public class EnemyController : MonoBehaviour {
     public void ResetEnemy() {
         this.currentStatus = EnemyStatus.IDLE;
         ToggleEnemy(false);
-        
+        healthBar.enabled = true;
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.identity;
         enemyRB.isKinematic = true;
         navAgent.enabled = false;
+        CurrentHealth = enemyObject.Health;
+        // enemyObject.SetEnemyDead(false);
+        isDead = false;
     }
 
-    private void EnemyDied() {
+    private void SetEnemyDied() {
         //Let The GameController know that this enemy has Died.
         //We need to move play enemy Death animation and Add reward to Players Wallet.
         this.currentStatus = EnemyStatus.DEAD;
-        
         ToggleEnemy(false);
+        if(orcShader is not null) orcShader.ResetShader();
+        // Debug.Log("4-->");
         this.transform.localPosition = Vector3.zero;
         this.transform.localRotation = Quaternion.identity;
     }
@@ -160,12 +184,13 @@ public class EnemyController : MonoBehaviour {
         }
 
         if (other.CompareTag("Tower")) {
-            this.currentStatus = EnemyStatus.IDLE;
-            ToggleEnemy(false);
-            this.transform.localPosition = Vector3.zero;
-            this.transform.localRotation = Quaternion.identity;
-            CurrentHealth = enemyObject.Health;
-            this.SetHealthbarValue(1f);
+            // this.currentStatus = EnemyStatus.IDLE;
+            // ToggleEnemy(false);
+            // this.transform.localPosition = Vector3.zero;
+            // this.transform.localRotation = Quaternion.identity;
+            // CurrentHealth = enemyObject.Health;
+            // this.SetHealthbarValue(1f);
+            this.Attack();
         }
     }
 
@@ -175,23 +200,29 @@ public class EnemyController : MonoBehaviour {
     }
 
     public void Idle() {
-        enemyAnimator.SetBool("Walk Forward", false);
+        enemyAnimator.SetBool("Attack", false);
         enemyAnimator.SetBool("Run Forward", false);
     }
 
     public void Run() {
-        enemyAnimator.SetBool("Walk Forward", false);
+        enemyAnimator.SetBool("Attack", false);
         enemyAnimator.SetBool("Run Forward", true);
     }
 
     public void TakeDamage() {
         enemyAnimator.SetTrigger("Take Damage");
     }
+    
+    public void Attack() {
+        enemyAnimator.SetBool("Run Forward", false);
+        enemyAnimator.SetBool("Attack", true);
+    }
 
     public void Die() {
-        enemyAnimator.SetBool("Walk Forward", false);
-        enemyAnimator.SetBool("Run Forward", false);
-        enemyAnimator.SetTrigger("Die");
+        // enemyAnimator.SetBool("Walk Forward", false);
+        // enemyAnimator.SetBool("Run Forward", false);
+        // enemyAnimator.SetTrigger("Die");
+        this.Idle();
     }
 
     public int GetID() {

@@ -25,7 +25,7 @@ public class Enemy : ScriptableObject
     public AttackType attackType;
     public int killRewardScore;
     public int killRewardGem;
-    public static bool IsDead;
+    private bool IsDead = false;
     public int EnemyId;
     public float AttackRate;
     public GameObject enemyPrefab;
@@ -40,8 +40,12 @@ public class Enemy : ScriptableObject
     #region Functions
     //write neccessary functions here for this scriptable Object
 
-    public void SetStatus(bool value) {
+    public void SetEnemyDead(bool value) {
         IsDead = value;
+    }
+
+    public bool IsEnemyDead () {
+        return IsDead;
     }
     #endregion
 }

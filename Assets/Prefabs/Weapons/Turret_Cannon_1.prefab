@@ -44,7 +44,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2022250613
 MonoBehaviour:
@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 6448303965797162006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7335946242990634575}
@@ -191,10 +191,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTargetTransform: {fileID: 0}
   thisWeapon: {fileID: 11400000, guid: 366b32ad383b1a2419b86906223d2065, type: 2}
-  RotateBody: {fileID: 7335946242990634575}
   detector: {fileID: 2022250613}
+  RotateBody: {fileID: 7335946242990634575}
   muzzleTransform: {fileID: 944281785562413007}
   MuzzleFlash: {fileID: 1433779198801158227}
+  Mask:
+    serializedVersion: 2
+    m_Bits: 128
+  bulletTrail: {fileID: 6894264947878371878, guid: c92b1319a3ac02b439b2513dcb163199, type: 3}
 --- !u!1 &6448303965797162008
 GameObject:
   m_ObjectHideFlags: 0
