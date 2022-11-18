@@ -24,13 +24,14 @@ public class GameController : MonoBehaviour
         RUNNING
     }
     private GameState currentGameState = GameState.MENU;
-
+    [SerializeField] private Animator LogoAnimator;
     public Action HideWeaponUI;
     private void Awake () {
         if(Instance == null) Instance = this;
     }
 
     private void Start() {
+        LogoAnimator.enabled = true;
         playerController = FindObjectOfType<PlayerGamePlayController>();
         waveController = FindObjectOfType<WaveController>();
     }
@@ -51,6 +52,7 @@ public class GameController : MonoBehaviour
             uiGroup.alpha = temp;
         }
 
+        LogoAnimator.enabled = false;
         uiGroup.alpha = 0;
         exitGameButton.interactable = true;
         exitGameButton.gameObject.SetActive(true);
@@ -62,6 +64,7 @@ public class GameController : MonoBehaviour
         exitGameButton.interactable = false;
         exitGameButton.gameObject.SetActive(false);
         float temp = uiGroup.alpha;
+        LogoAnimator.enabled = true;
         while (temp < 1) {
             yield return new WaitForEndOfFrame();
             temp += Time.deltaTime;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class PlayerGamePlayController : MonoBehaviour
 {
@@ -74,14 +75,21 @@ public class PlayerGamePlayController : MonoBehaviour
             RaycastHit hitInfo = new RaycastHit();
             bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo);
             if (hit) {
+                // Debug.LogError("PlayerGamePlayController :: hit name= "+hitInfo.transform.name);
                 if (hitInfo.transform.gameObject.layer == BaseLayer) {
                     Base currBase = hitInfo.transform.GetComponent<Base>();
                     Debug.LogError("OPU :: hit object= "+hitInfo.transform.name);
                     if(currBase is not null) CheckAndShowWeaponsToDisplayForCurrBase(currBase);
                     //turretParent.position = hitInfo.transform.GetComponent<Base>().GetTurretPosFromBase();
                 }
+                
             }
         }
+    }
+
+    public void HideWeaponUI () {
+        ToggleWeaponActions(false);
+        ToggleWeaponUI(false);
     }
 
 
