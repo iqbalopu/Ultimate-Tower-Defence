@@ -53,8 +53,9 @@ public class CameraMove : MonoBehaviour
         if (clicked_) {
             if(lastPosition != Vector3.zero) {
                 Vector2 Direction = (lastPosition - Input.mousePosition) * 0.5f;
-                float xValue = transform.position.x + (Direction.x / 10);
-                float zValue = transform.position.z + (Direction.y / 10);
+                float inverseValue = GameController.Instance.IsInverseActive () ? 1f : -1f;
+                float xValue = transform.position.x + (inverseValue * Direction.x / 10);
+                float zValue = transform.position.z + (inverseValue * Direction.y / 10);
                 if(zValue > MaxLimitZ || zValue < MinLimitZ) {
                     zValue = transform.position.z;
                 }
@@ -130,8 +131,9 @@ public class CameraMove : MonoBehaviour
 
                 Vector2 Direction = (lastTouchPosition - Input.touches[0].position) * 0.5f;
                 Debug.Log(Direction);
-                float xValue = transform.position.x + (Direction.x / 10);
-                float zValue = transform.position.z + (Direction.y / 10);
+                float inverseValue = GameController.Instance.IsInverseActive () ? 1f : -1f;
+                float xValue = transform.position.x + (inverseValue * Direction.x / 10);
+                float zValue = transform.position.z + (inverseValue * Direction.y / 10);
                 if (zValue > MaxLimitZ || zValue < MinLimitZ) {
                     zValue = transform.position.z;
                 }

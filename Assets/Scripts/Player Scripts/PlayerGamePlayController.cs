@@ -78,7 +78,7 @@ public class PlayerGamePlayController : MonoBehaviour
                 // Debug.LogError("PlayerGamePlayController :: hit name= "+hitInfo.transform.name);
                 if (hitInfo.transform.gameObject.layer == BaseLayer) {
                     Base currBase = hitInfo.transform.GetComponent<Base>();
-                    Debug.LogError("OPU :: hit object= "+hitInfo.transform.name);
+                    // Debug.LogError("OPU :: hit object= "+hitInfo.transform.name);
                     if(currBase is not null) CheckAndShowWeaponsToDisplayForCurrBase(currBase);
                     //turretParent.position = hitInfo.transform.GetComponent<Base>().GetTurretPosFromBase();
                 }
@@ -103,7 +103,7 @@ public class PlayerGamePlayController : MonoBehaviour
     }
 
     private void HideWeaponAction () {
-        Debug.LogError("Calling from PlayerGamePlayController");
+        // Debug.LogError("Calling from PlayerGamePlayController");
         ToggleWeaponActions(false);
         ToggleWeaponUI (false);
     }

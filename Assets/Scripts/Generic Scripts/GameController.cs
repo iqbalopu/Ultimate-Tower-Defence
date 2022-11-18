@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameController : MenuUI
 {
     public static GameController Instance;
     private WaveController waveController;
@@ -75,7 +75,6 @@ public class GameController : MonoBehaviour
     }
 
     public void ExitGame() {
-        Debug.LogError("Exit Called------->");
         HideWeaponUI ();
         waveController.ResetWave();
         waveController.ResetGame();
