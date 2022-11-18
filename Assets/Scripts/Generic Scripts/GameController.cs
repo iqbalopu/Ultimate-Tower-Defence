@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,12 +24,13 @@ public class GameController : MonoBehaviour
         RUNNING
     }
     private GameState currentGameState = GameState.MENU;
-    
+
+    public Action HideWeaponUI;
+    private void Awake () {
+        if(Instance == null) Instance = this;
+    }
 
     private void Start() {
-        if(Instance == null) {
-            Instance = this;
-        }
         playerController = FindObjectOfType<PlayerGamePlayController>();
         waveController = FindObjectOfType<WaveController>();
     }
@@ -70,6 +72,8 @@ public class GameController : MonoBehaviour
     }
 
     public void ExitGame() {
+        Debug.LogError("Exit Called------->");
+        HideWeaponUI ();
         waveController.ResetWave();
         waveController.ResetGame();
         playerController.ResetTurrets();

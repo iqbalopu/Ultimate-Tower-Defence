@@ -120,7 +120,7 @@ public class WeaponController : MonoBehaviour
             BlastParticle bp = PlayerGamePlayController.Instance.GetParticleToBlast();
             bp.PlayParticle(hit.point);
         }
-        Destroy(trail.gameObject, trail.time);
+        Destroy(trail.gameObject);
     }
 
     private void HideFlash() {

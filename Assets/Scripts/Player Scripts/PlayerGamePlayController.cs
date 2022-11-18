@@ -49,6 +49,7 @@ public class PlayerGamePlayController : MonoBehaviour
         if(Instance == null) {
             Instance = this;
         }
+        GameController.Instance.HideWeaponUI += HideWeaponAction;
     }
 
     private void Start() {
@@ -91,6 +92,12 @@ public class PlayerGamePlayController : MonoBehaviour
 
     private void ToggleWeaponActions(bool value) {
         WeaponActionUI.SetActive(value);
+    }
+
+    private void HideWeaponAction () {
+        Debug.LogError("Calling from PlayerGamePlayController");
+        ToggleWeaponActions(false);
+        ToggleWeaponUI (false);
     }
 
     private void CheckAndShowWeaponsToDisplayForCurrBase(Base selectedBase) {
