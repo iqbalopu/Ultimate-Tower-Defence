@@ -22,6 +22,6 @@ public class WeaponUI : MonoBehaviour
 
     public void OnClickWeaponButton() {
         Debug.Log("Clicking For WeaponID= " + ThisWeapon.WeaponID);
-        PlayerInputController.Instance.OnWeaponSelected(ThisWeapon);
+        PlayerController.Instance.OnWeaponSelected(ThisWeapon);
     }
 }

@@ -5719,6 +5719,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1504275837}
   - component: {fileID: 1504275838}
+  - component: {fileID: 1504275843}
+  - component: {fileID: 1504275842}
+  - component: {fileID: 1504275841}
+  - component: {fileID: 1504275840}
+  - component: {fileID: 1504275839}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -5753,17 +5758,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eef1cebe43739f41809bf7724a00063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolCount: 100
   bulletSpeed: 50
   DivideCount: 1
-  particleTimeOut: 1
-  playerScore: 0
-  GemCount: 1000
-  bulletParentTransform: {fileID: 409185264}
   weaponParent: {fileID: 2041948441}
-  bulletPrefab_: {fileID: 4505389397749708907, guid: ba8c2692992f03847b705ec49b0189c3, type: 3}
-  blastParticle: {fileID: 9195730818009432564, guid: 27efe60e31259f04eb483a254871230a, type: 3}
-  particleparent: {fileID: 217376091}
+--- !u!114 &1504275839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504275836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a901336d4e854c4898a6b5a4527f8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   scoreText: {fileID: 2051598012}
   gemText: {fileID: 690712240}
   gemObject: {fileID: 832345861}
@@ -5771,7 +5780,59 @@ MonoBehaviour:
   scoreAnim: {fileID: 1695147844}
   WeaponUIParent: {fileID: 1154288156}
   WeaponActionUI: {fileID: 1691295523}
-  BG: {fileID: 0}
+--- !u!114 &1504275840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504275836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f2ffa29c97e88c4380f079ec9e99692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1504275841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504275836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d5e11352b0b3646882f37edbe5e024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolCount: 20
+  particleTimeOut: 1
+  obsParticlePrefab: {fileID: 9195730818009432564, guid: 27efe60e31259f04eb483a254871230a, type: 3}
+  particleparent: {fileID: 217376091}
+--- !u!114 &1504275842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504275836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a373b7c5ee84ec428e3410d0fbdb94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1504275843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504275836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79849310135a1db4eb27c7a0e641987a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemCount_: 2000
 --- !u!1 &1515849241
 GameObject:
   m_ObjectHideFlags: 0
@@ -6833,7 +6894,9 @@ MonoBehaviour:
   SettingsUIGroup: {fileID: 1369196273}
   isInverseCameraGrip: 0
   InverseCameraGrip: {fileID: 380002879}
-  uiGroup: {fileID: 1710315650}
+  waveController: {fileID: 1261671177}
+  playerController: {fileID: 1504275838}
+  MenuCanvas: {fileID: 1710315650}
   exitGameButton: {fileID: 850907185}
   turretSmoothFactor: 9
   CurrentShootStyle: 1

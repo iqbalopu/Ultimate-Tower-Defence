@@ -13,10 +13,6 @@ public class WeaponPool : MonoBehaviour {
     private GameObject bulletPrefab;
     private TrailRenderer bulletTrail;
     
-    [SerializeField] private Transform bulletParentTransform;
-    [SerializeField] private Transform particleparent;
-    [SerializeField] private Transform trailParent;
-    
     public int MaxPoolCount;
     
     private void Start () {
@@ -26,6 +22,7 @@ public class WeaponPool : MonoBehaviour {
         GenerateBulletPool ();
         GenerateBlastParticlePool ();
     }
+    
 
     private void SetPrefabInstances () {
         blastParticle = thisController_.GetThisWeaponData ().BlastParticle;
@@ -51,7 +48,7 @@ public class WeaponPool : MonoBehaviour {
     private void GenerateBulletPool() {
         if (bulletPrefab is not null) {
             for (int i = 0; i < MaxPoolCount; i++) {
-                GameObject g = Instantiate(bulletPrefab, bulletParentTransform.position, Quaternion.identity, transform);
+                GameObject g = Instantiate(bulletPrefab, this.transform.position, Quaternion.identity, transform);
                 g.SetActive(false);
                 bullets.Add(g.GetComponent<Bullet>());
             }
@@ -67,7 +64,7 @@ public class WeaponPool : MonoBehaviour {
     
     private void GenerateBlastParticlePool() {
         for (int i = 0; i < MaxPoolCount; i++) {
-            GameObject g = Instantiate(blastParticle, particleparent.position, Quaternion.identity, transform);
+            GameObject g = Instantiate(blastParticle, this.transform.position, Quaternion.identity, transform);
             BlastParticle bp = g.GetComponent<BlastParticle>();
             g.SetActive(false);
             blastParticles.Add(bp);

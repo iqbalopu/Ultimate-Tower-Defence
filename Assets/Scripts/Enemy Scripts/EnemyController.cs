@@ -109,7 +109,8 @@ public class EnemyController : MonoBehaviour {
             // navAgent.enabled = false;
             // navAgent.isStopped = true;
             navAgent.speed = 0f;
-            PlayerInputController.Instance.IncreaseScore(enemyObject.killRewardScore, enemyObject.killRewardGem);
+            PlayerController.Instance.GetPlayerScore().IncreaseScore(enemyObject.killRewardScore);
+            PlayerController.Instance.GetPlayerData().IncreaseGemCount(enemyObject.killRewardGem);
             // Debug.Log("1-->");
             StartCoroutine(EnemyDead());
             return;
@@ -173,7 +174,7 @@ public class EnemyController : MonoBehaviour {
             //Decrease health of the enemy{
             // Get Damage from BulletComponent and minus the damage from current health
             Bullet b = other.gameObject.GetComponent<Bullet>();
-            BlastParticle ps = PlayerInputController.Instance.GetObstacleHitParticle();
+            BlastParticle ps = PlayerController.Instance.GetPlayerPool().GetObstacleHitParticle();
             ps.PlayParticle(b.transform);
             b.ResetBullet();
             this.DecreaseHealth(b.GetDamage());

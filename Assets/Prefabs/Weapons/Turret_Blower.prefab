@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92491272ed1fac44a2ff0f6e5c3b58c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detector: {fileID: 0}
+  detector: {fileID: 357908456}
 --- !u!114 &1540601383950365034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dcb23e1ea16cf46a18f1193b569b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletTrail: {fileID: 6894264947878371878, guid: c92b1319a3ac02b439b2513dcb163199, type: 3}
   MaxPoolCount: 10
 --- !u!1 &6799401352908011947
 GameObject:

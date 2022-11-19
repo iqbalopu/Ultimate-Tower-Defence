@@ -2,14 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameController : MenuUI
 {
     public static GameController Instance;
-    private WaveController waveController;
-    private PlayerInputController playerController;
-    public CanvasGroup uiGroup;
+    [SerializeField] private WaveController waveController;
+    [SerializeField] private PlayerController playerController;
+    [FormerlySerializedAs ("uiGroup")] public CanvasGroup MenuCanvas;
     public Button exitGameButton;
     public float turretSmoothFactor;
     public enum ShootStyle {
@@ -25,15 +26,16 @@ public class GameController : MenuUI
     }
     private GameState currentGameState = GameState.MENU;
     [SerializeField] private Animator LogoAnimator;
-    public Action HideWeaponUI;
+    
+    public Action HideAllWeaponUI;
+    public Action ExitGamePlay;
+    public Action StartGamePlay;
     private void Awake () {
         if(Instance == null) Instance = this;
     }
 
     private void Start() {
         LogoAnimator.enabled = true;
-        playerController = FindObjectOfType<PlayerInputController>();
-        waveController = FindObjectOfType<WaveController>();
     }
     // Start is called before the first frame update
     public void StartGame() {
@@ -45,42 +47,42 @@ public class GameController : MenuUI
     }
 
     IEnumerator HideMenu() {
-        float temp = uiGroup.alpha;
+        float temp = MenuCanvas.alpha;
         while(temp > 0) {
-            yield return new WaitForEndOfFrame();
             temp -= Time.deltaTime;
-            uiGroup.alpha = temp;
+            MenuCanvas.alpha = temp;
+            yield return new WaitForEndOfFrame();
         }
-
+        StartGamePlay ();
         LogoAnimator.enabled = false;
-        uiGroup.alpha = 0;
+        MenuCanvas.alpha = 0;
+        MenuCanvas.blocksRaycasts = false;
         exitGameButton.interactable = true;
         exitGameButton.gameObject.SetActive(true);
-        waveController.StartGame();
         currentGameState = GameState.RUNNING;
     }
 
     IEnumerator ShowMenu() {
         exitGameButton.interactable = false;
         exitGameButton.gameObject.SetActive(false);
-        float temp = uiGroup.alpha;
+        float temp = MenuCanvas.alpha;
         LogoAnimator.enabled = true;
         while (temp < 1) {
             yield return new WaitForEndOfFrame();
             temp += Time.deltaTime;
-            uiGroup.alpha = temp;
+            MenuCanvas.alpha = temp;
         }
-        uiGroup.alpha = 1;
+        MenuCanvas.alpha = 1;
+        MenuCanvas.blocksRaycasts = true;
         currentGameState = GameState.MENU;
     }
 
     public void ExitGame() {
-        HideWeaponUI ();
+        HideAllWeaponUI ();
+        if (ExitGamePlay is not null) ExitGamePlay ();
         waveController.ResetWave();
         waveController.ResetGame();
         playerController.ResetTurrets();
-        playerController.ToggleScoreCard(false);
-        playerController.ToggleGemObject(false);
         StartCoroutine(ShowMenu());
     }
 

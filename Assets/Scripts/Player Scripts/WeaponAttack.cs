@@ -21,7 +21,7 @@ public class WeaponAttack : MonoBehaviour {
         if(fireCountDown <= 0) {
             // Shoot(directionToShoot);
             if (Shootbullet is not null) Shootbullet ();
-            fireCountDown = PlayerInputController.Instance.DivideCount / thisController_.GetThisWeaponData().FireRate;
+            fireCountDown = PlayerController.Instance.DivideCount / thisController_.GetThisWeaponData().FireRate;
         }
         fireCountDown -= Time.deltaTime;
     }

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WaveController : MonoBehaviour {
     public int WaitBeforeNextWave;
@@ -15,15 +17,17 @@ public class WaveController : MonoBehaviour {
     public float waitBeforeGameStart;
     [Range(0f, 5f)]public float IntervalInbetweenEnemies;
 
+    private void Awake () {
+        GameController.Instance.StartGamePlay += StartGame;
+    }
+
     // Start is called before the first frame update
     void Start() {
         if(enemyPool.Count == 0) GenerateEnemyPool();
     }
 
-    public void StartGame() {
+    private void StartGame() {
         //PlayerGamePlayController.Instance.SetTurretUI();
-        PlayerInputController.Instance.ToggleScoreCard(true);
-        PlayerInputController.Instance.ToggleGemObject(true);
         InvokeRepeating("Release", waitBeforeGameStart, WaitBeforeNextWave);
 
     }
