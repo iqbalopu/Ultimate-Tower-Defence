@@ -10,7 +10,7 @@ public class GameController : MenuUI
     public static GameController Instance;
     [SerializeField] private WaveController waveController;
     [SerializeField] private PlayerController playerController;
-    [FormerlySerializedAs ("uiGroup")] public CanvasGroup MenuCanvas;
+    [SerializeField] private CanvasGroup menuCanvas;
     public Button exitGameButton;
     public float turretSmoothFactor;
     public enum ShootStyle {
@@ -47,16 +47,16 @@ public class GameController : MenuUI
     }
 
     IEnumerator HideMenu() {
-        float temp = MenuCanvas.alpha;
+        float temp = menuCanvas.alpha;
         while(temp > 0) {
             temp -= Time.deltaTime;
-            MenuCanvas.alpha = temp;
+            menuCanvas.alpha = temp;
             yield return new WaitForEndOfFrame();
         }
         StartGamePlay ();
         LogoAnimator.enabled = false;
-        MenuCanvas.alpha = 0;
-        MenuCanvas.blocksRaycasts = false;
+        menuCanvas.alpha = 0;
+        menuCanvas.blocksRaycasts = false;
         exitGameButton.interactable = true;
         exitGameButton.gameObject.SetActive(true);
         currentGameState = GameState.RUNNING;
@@ -65,15 +65,15 @@ public class GameController : MenuUI
     IEnumerator ShowMenu() {
         exitGameButton.interactable = false;
         exitGameButton.gameObject.SetActive(false);
-        float temp = MenuCanvas.alpha;
+        float temp = menuCanvas.alpha;
         LogoAnimator.enabled = true;
         while (temp < 1) {
             yield return new WaitForEndOfFrame();
             temp += Time.deltaTime;
-            MenuCanvas.alpha = temp;
+            menuCanvas.alpha = temp;
         }
-        MenuCanvas.alpha = 1;
-        MenuCanvas.blocksRaycasts = true;
+        menuCanvas.alpha = 1;
+        menuCanvas.blocksRaycasts = true;
         currentGameState = GameState.MENU;
     }
 

@@ -6896,7 +6896,7 @@ MonoBehaviour:
   InverseCameraGrip: {fileID: 380002879}
   waveController: {fileID: 1261671177}
   playerController: {fileID: 1504275838}
-  MenuCanvas: {fileID: 1710315650}
+  menuCanvas: {fileID: 1710315650}
   exitGameButton: {fileID: 850907185}
   turretSmoothFactor: 9
   CurrentShootStyle: 1
