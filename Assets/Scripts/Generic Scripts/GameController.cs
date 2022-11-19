@@ -8,7 +8,7 @@ public class GameController : MenuUI
 {
     public static GameController Instance;
     private WaveController waveController;
-    private PlayerGamePlayController playerController;
+    private PlayerInputController playerController;
     public CanvasGroup uiGroup;
     public Button exitGameButton;
     public float turretSmoothFactor;
@@ -32,7 +32,7 @@ public class GameController : MenuUI
 
     private void Start() {
         LogoAnimator.enabled = true;
-        playerController = FindObjectOfType<PlayerGamePlayController>();
+        playerController = FindObjectOfType<PlayerInputController>();
         waveController = FindObjectOfType<WaveController>();
     }
     // Start is called before the first frame update

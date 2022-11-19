@@ -23,5 +23,8 @@ public class Weapon : ScriptableObject {
     public DamageType damageType = DamageType.NONE;
     public Sprite turretImage;
     public int WeaponCost;
+    public GameObject BulletPrefab;
+    public GameObject BlastParticle;
+    public TrailRenderer TrailObject;
 
 }

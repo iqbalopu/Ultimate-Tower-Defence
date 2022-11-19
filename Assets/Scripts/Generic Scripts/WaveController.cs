@@ -22,8 +22,8 @@ public class WaveController : MonoBehaviour {
 
     public void StartGame() {
         //PlayerGamePlayController.Instance.SetTurretUI();
-        PlayerGamePlayController.Instance.ToggleScoreCard(true);
-        PlayerGamePlayController.Instance.ToggleGemObject(true);
+        PlayerInputController.Instance.ToggleScoreCard(true);
+        PlayerInputController.Instance.ToggleGemObject(true);
         InvokeRepeating("Release", waitBeforeGameStart, WaitBeforeNextWave);
 
     }

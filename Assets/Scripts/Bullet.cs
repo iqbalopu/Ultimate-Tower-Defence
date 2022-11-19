@@ -47,14 +47,14 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("Path") || other.CompareTag("Obstacle")) {
-            BlastParticle bp = PlayerGamePlayController.Instance.GetParticleToBlast();
+            BlastParticle bp = PlayerInputController.Instance.GetObstacleHitParticle();
             bp.PlayParticle(this.transform);
             this.ResetBullet();
         }
     }
 
     public void ShootSelf(Vector3 direction) {
-        bulletRB.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
+        bulletRB.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerInputController.Instance.bulletSpeed;
     }
 
     public void HitTarget() {

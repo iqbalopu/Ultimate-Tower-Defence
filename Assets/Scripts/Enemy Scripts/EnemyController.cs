@@ -51,10 +51,6 @@ public class EnemyController : MonoBehaviour {
         // this.Walk();
     }
 
-    public float ConvertRange(float RangeACurrentValue, float RangeAMax, float RangeAMin, float RangeBMax, float RangeBMin) {
-        return (((RangeACurrentValue - RangeAMin) * (RangeBMax - RangeBMin)) / (RangeAMax - RangeAMin)) + RangeBMin;
-    }
-
     public bool IsEnemyDead () {
         return isDead;
     }
@@ -100,7 +96,7 @@ public class EnemyController : MonoBehaviour {
     public void DecreaseHealth(int damage) {
         if(isDead) return;
         StopCoroutine(ReduceHealthBar());
-        this.SetHealthbarValue(this.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f));
+        this.SetHealthbarValue(Utills.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f));
         float remainingHealth = CurrentHealth - (float)damage;
         float previousHealth = CurrentHealth;
         if (remainingHealth <= 0) {
@@ -113,7 +109,7 @@ public class EnemyController : MonoBehaviour {
             // navAgent.enabled = false;
             // navAgent.isStopped = true;
             navAgent.speed = 0f;
-            PlayerGamePlayController.Instance.IncreaseScore(enemyObject.killRewardScore, enemyObject.killRewardGem);
+            PlayerInputController.Instance.IncreaseScore(enemyObject.killRewardScore, enemyObject.killRewardGem);
             // Debug.Log("1-->");
             StartCoroutine(EnemyDead());
             return;
@@ -132,7 +128,7 @@ public class EnemyController : MonoBehaviour {
 
      IEnumerator ReduceHealthBar() {
         float currFillAmount = healthBar.fillAmount;
-        float updatedFillAmount = this.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f);
+        float updatedFillAmount = Utills.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f);
         float difference = updatedFillAmount - currFillAmount;
         while(currFillAmount < updatedFillAmount) {
             yield return new WaitForEndOfFrame();
@@ -177,7 +173,7 @@ public class EnemyController : MonoBehaviour {
             //Decrease health of the enemy{
             // Get Damage from BulletComponent and minus the damage from current health
             Bullet b = other.gameObject.GetComponent<Bullet>();
-            BlastParticle ps = PlayerGamePlayController.Instance.GetParticleToBlast();
+            BlastParticle ps = PlayerInputController.Instance.GetObstacleHitParticle();
             ps.PlayParticle(b.transform);
             b.ResetBullet();
             this.DecreaseHealth(b.GetDamage());

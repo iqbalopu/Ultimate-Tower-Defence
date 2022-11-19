@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponUIController : MonoBehaviour
 {
     public void ButtonPressed_CancelWeaponUI () {
-        PlayerGamePlayController.Instance.HideWeaponUI();
+        PlayerInputController.Instance.HideWeaponUI();
     }
     
 }

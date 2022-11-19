@@ -4,24 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.Serialization;
 
-public class PlayerGamePlayController : MonoBehaviour
+public class PlayerInputController : MonoBehaviour
 {
-    public static PlayerGamePlayController Instance;
+    public static PlayerInputController Instance;
     [Header("Attributes")]
     public int poolCount;
     public float bulletSpeed;
     public float DivideCount;
     public float particleTimeOut;
     public int playerScore = 0;
-    public float MaxDistanceFromEnemy;
     public int GemCount;
 
     [Header("Assignable Unity Component")]
-    public Transform bulletParentTransform;
-    public Transform turretParent;
-    public GameObject bulletPrefab_;
-    public GameObject blastParticle;
+    [FormerlySerializedAs ("turretParent")] public Transform weaponParent;
+    [FormerlySerializedAs ("blastParticle")] public GameObject obsParticlePrefab;
     public Transform particleparent;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gemText;
@@ -37,7 +35,7 @@ public class PlayerGamePlayController : MonoBehaviour
 
     private List<Bullet> bullets = new List<Bullet>();
     private List<WeaponController> playerTurrets = new List<WeaponController>();
-    private List<BlastParticle> blastParticles = new List<BlastParticle>();
+    private List<BlastParticle> obsParticles = new List<BlastParticle>();
     private int BaseLayer;
     private int WeaponLayer;
     private bool IsShowingBaseHighlight;
@@ -61,8 +59,7 @@ public class PlayerGamePlayController : MonoBehaviour
         this.ToggleGemObject(false);
         this.ResetPlayer();
         SetGemText(""+GemCount);
-        if (bullets.Count == 0) GenerateBulletPool();
-        if(blastParticles.Count == 0) GenerateParticlePool();
+        if(obsParticles.Count == 0) GenerateObsBlastParticlePool();
         //SetWeaponsInPosition();
         BaseLayer = LayerMask.NameToLayer("BaseLayer");
         WeaponLayer = LayerMask.NameToLayer("WeaponLayer");
@@ -179,40 +176,29 @@ public class PlayerGamePlayController : MonoBehaviour
     //    }
     //}
 
-    private void GenerateBulletPool() {
-        for (int i = 0; i < poolCount; i++) {
-            GameObject g = Instantiate(bulletPrefab_, bulletParentTransform.position, Quaternion.identity, bulletParentTransform);
-            g.SetActive(false);
-            bullets.Add(g.GetComponent<Bullet>());
-        }
-    }
+    
 
-    private void GenerateParticlePool() {
+    private void GenerateObsBlastParticlePool() {
         for (int i = 0; i < poolCount; i++) {
-            GameObject g = Instantiate(blastParticle, particleparent.position, Quaternion.identity, particleparent);
+            GameObject g = Instantiate(obsParticlePrefab, particleparent.position, Quaternion.identity, particleparent);
             BlastParticle bp = g.GetComponent<BlastParticle>();
             g.SetActive(false);
-            blastParticles.Add(bp);
+            obsParticles.Add(bp);
         }
     }
 
-    public BlastParticle GetParticleToBlast() {
-        for (int i = 0; i < blastParticles.Count; i++) {
-            if (!blastParticles[i].gameObject.activeInHierarchy) return blastParticles[i];
-        }
-        return null;
-    }
-
-
-    public Bullet GetBulletToShoot() {
-        for (int i = 0; i < bullets.Count; i++) {
-            if (!bullets[i].gameObject.activeInHierarchy) return bullets[i];
+    public BlastParticle GetObstacleHitParticle() {
+        for (int i = 0; i < obsParticles.Count; i++) {
+            if (!obsParticles[i].gameObject.activeInHierarchy) return obsParticles[i];
         }
         return null;
     }
+
+
+    
 
     private void GetAllTurrets() {
-        WeaponController[] turrets = turretParent.GetComponentsInChildren<WeaponController>();
+        WeaponController[] turrets = weaponParent.GetComponentsInChildren<WeaponController>();
         for (int i = 0; i < turrets.Length; i++) {
             playerTurrets.Add(turrets[i]);
         }

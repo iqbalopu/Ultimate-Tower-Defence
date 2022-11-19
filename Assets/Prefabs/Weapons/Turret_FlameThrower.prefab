@@ -100,6 +100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8139726626845083873}
+  - component: {fileID: 1852924655997233495}
   m_Layer: 2
   m_Name: Muzzel
   m_TagString: Untagged
@@ -123,6 +124,20 @@ Transform:
   m_Father: {fileID: 599680684646221002}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1852924655997233495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719278552073655357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1263e4ecf425698458096fceec9051ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MuzzleFlash: {fileID: 3786393778430645263}
+  thisController_: {fileID: 367315369}
 --- !u!1 &4411584557162090689
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +231,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4411584557161729251}
   - component: {fileID: 367315369}
+  - component: {fileID: 7628424108989611508}
+  - component: {fileID: 1076212073601626860}
+  - component: {fileID: 2444065512221016259}
+  - component: {fileID: 6847395926222268730}
   m_Layer: 2
   m_Name: Turret_FlameThrower
   m_TagString: Untagged
@@ -254,16 +273,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf72bfce0665f14796f1c5e5856307e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTargetTransform: {fileID: 0}
-  thisWeapon: {fileID: 11400000, guid: 6555d65ecd6878b4c8317e5c220de30c, type: 2}
-  detector: {fileID: 2031523790}
+  thisWeaponData: {fileID: 11400000, guid: 6555d65ecd6878b4c8317e5c220de30c, type: 2}
   RotateBody: {fileID: 599680684646221002}
-  muzzleTransform: {fileID: 8139726626845083873}
-  MuzzleFlash: {fileID: 3786393778430645263}
-  Mask:
-    serializedVersion: 2
-    m_Bits: 128
+--- !u!114 &7628424108989611508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411584557162090691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e831e73c062e04c8cb6d664ead2e80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1076212073601626860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411584557162090691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b92491272ed1fac44a2ff0f6e5c3b58c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detector: {fileID: 2031523790}
+--- !u!114 &2444065512221016259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411584557162090691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ecd282442344e643b9dcaa52f440e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6847395926222268730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4411584557162090691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dcb23e1ea16cf46a18f1193b569b6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   bulletTrail: {fileID: 6894264947878371878, guid: c92b1319a3ac02b439b2513dcb163199, type: 3}
+  MaxPoolCount: 10
 --- !u!1 &4411584557162090693
 GameObject:
   m_ObjectHideFlags: 0

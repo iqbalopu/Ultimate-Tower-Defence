@@ -1,130 +1,66 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField]
-    private Transform currentTargetTransform;
-    public Weapon thisWeapon;
-    public EnemyDetector detector;
+    [FormerlySerializedAs ("thisWeapon")] [SerializeField] private Weapon thisWeaponData;
     [SerializeField] private Transform RotateBody;
-    [SerializeField] private Transform muzzleTransform;
-    [SerializeField] private GameObject MuzzleFlash;
-    [SerializeField] private LayerMask Mask;
-    [SerializeField] private TrailRenderer bulletTrail;
-    private float fireCountDown = 0f;
     private bool isActive;
-    private int CurrentHealth;
+    private WeaponAttack thisWeaponAttack_;
+    private WeaponAreaDetection thisArea_;
+    private WeaponHealth thisHealth_;
+    private WeaponPool m_ThisPool;
+
+    public Action Initialize;
+    public Action Shoot;
 
     private void Awake() {
-        //if (thisWeapon != null) InitializeWeapon(thisWeapon);
-        //detector = this.transform.GetComponentInChildren<EnemyDetector>();
+        thisWeaponAttack_ = GetComponent<WeaponAttack> ();
+        thisArea_ = GetComponent<WeaponAreaDetection> ();
+        thisHealth_ = GetComponent<WeaponHealth> ();
+        m_ThisPool = GetComponent<WeaponPool> ();
     }
 
     public void InitializeWeapon(Weapon weapon) {
-        CurrentHealth = weapon.Health;
-        thisWeapon = weapon;
-        if (detector != null) detector.SetColliderRange(this.thisWeapon.RangeRadius);
+        if(Initialize is not null) Initialize ();
+        thisWeaponData = weapon;
         isActive = true;
-        StartCheckingForEnemy();
-    }
-
-    private void StartCheckingForEnemy() {
-        InvokeRepeating("UpdateNearestEnemy", 0.1f, Time.deltaTime);
-    }
-
-    private void UpdateNearestEnemy() {
-        currentTargetTransform = detector.GetUpdatedTarget();
-        //Debug.Log("Turrett Name= " + this.thisWeapon.Name + ", currentTargetTransform after Update= " + currentTargetTransform);
     }
 
     public void ResetTurret() {
         CancelInvoke("UpdateNearestEnemy");
         isActive = true;
-        CurrentHealth = thisWeapon.Health;
+        Initialize ();
+    }
+
+    public Weapon GetThisWeaponData () {
+        return this.thisWeaponData;
     }
 
     // Update is called once per frame
     void Update() {
         if(!GameController.Instance.IsGameRunning()) return;
         if (!isActive) return;
-        if (currentTargetTransform == null) {
+        if (thisArea_.GetCurrentTargetTransform() == null) {
             return;
         }
 
-        Vector3 dir = currentTargetTransform.position - RotateBody.position;
+        if(RotateBody is not null) RotateBodyObject ();
+        if (Shoot is not null) {
+            thisWeaponAttack_.SetDirectionForShooting(thisArea_.GetCurrentTargetTransform().position - RotateBody.position);
+            Shoot ();
+        }
+    }
+
+    private void RotateBodyObject () {
+        Vector3 dir = thisArea_.GetCurrentTargetTransform().position - RotateBody.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(RotateBody.rotation, lookRotation, Time.deltaTime*GameController.Instance.turretSmoothFactor).eulerAngles;
         RotateBody.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-        //Debug.Log("Rotating Rotate body of " + thisWeapon.Name);
-        if(fireCountDown <= 0) {
-            Shoot(dir);
-            fireCountDown = PlayerGamePlayController.Instance.DivideCount / thisWeapon.FireRate;
-        }
-
-        fireCountDown -= Time.deltaTime;
-    }
-
-    private void Shoot(Vector3 direction) {
-        if (GameController.Instance.CurrentShootStyle == GameController.ShootStyle.OBJECT_POOLING) {
-            Bullet bullet = PlayerGamePlayController.Instance.GetBulletToShoot();
-            if(bullet != null) {
-                CancelInvoke("HideFlash");
-                HideFlash();
-                bullet.transform.position = muzzleTransform.position;
-                bullet.SetTargetTransform(null);
-                Vector3 directionTemp = currentTargetTransform.position - bullet.transform.position;
-                directionTemp.Normalize();
-                bullet.SetBulletDamage(thisWeapon.AttackDamage);
-                bullet.gameObject.SetActive(true);
-                bullet.ShootSelf(directionTemp);
-                MuzzleFlash.SetActive(true);
-                Invoke("HideFlash", 0.2f);
-                //bulletRb.velocity = new Vector3(direction.x, direction.y, direction.z) * PlayerGamePlayController.Instance.bulletSpeed;
-            }
-        }else if (GameController.Instance.CurrentShootStyle == GameController.ShootStyle.RAYCAST) {
-            //Another way- the raycastWay
-            if (Physics.Raycast (muzzleTransform.position, direction, out RaycastHit hit, float.MaxValue)) {
-                // Debug.Log("Hitting Enemy "+hit.transform.tag);
-                if (hit.transform.CompareTag ("Enemy")) {
-                    if (!hit.transform.GetComponent<EnemyController> ().IsEnemyDead ()) {
-                        TrailRenderer trail = Instantiate (bulletTrail, muzzleTransform.position, Quaternion.identity);
-                        MuzzleFlash.SetActive(true);
-                        Invoke("HideFlash", 0.2f);
-                        StartCoroutine (SpawnTrail (trail, hit));
-                    }
-                }
-            }
-        }
-    }
-
-    private Vector3 GetDirection () {
-        return muzzleTransform.forward;
-    }
-
-    IEnumerator SpawnTrail (TrailRenderer trail, RaycastHit hit) {
-        float time = 0;
-        Vector3 startPos = trail.transform.position;
-        while (time < 1) {
-            trail.transform.position = Vector3.Lerp(startPos,hit.point, time);
-            time += Time.deltaTime / trail.time;
-            yield return null;
-        }
-
-        trail.transform.position = hit.point;
-        EnemyController ec =  hit.transform.GetComponent<EnemyController>();
-        if (ec != null) {
-            ec.DecreaseHealth (thisWeapon.AttackDamage);
-            BlastParticle bp = PlayerGamePlayController.Instance.GetParticleToBlast();
-            bp.PlayParticle(hit.point);
-        }
-        Destroy(trail.gameObject);
-    }
-
-    private void HideFlash() {
-        MuzzleFlash.SetActive(false);
     }
 
     public void SetPositionofWeapon(Transform pos) {
@@ -132,12 +68,28 @@ public class WeaponController : MonoBehaviour
         this.transform.rotation = pos.rotation;
     }
 
+    public WeaponAttack GetWeaponAttack () {
+        return thisWeaponAttack_;
+    }
+    
+    public WeaponAreaDetection GetWeaponArea () {
+        return thisArea_;
+    }
+    
+    public WeaponHealth GetWeaponHealth () {
+        return thisHealth_;
+    }
+    
+    public WeaponPool GetWeaponPool () {
+        return m_ThisPool;
+    }
+
     public int GetWeaponSellCost() {
-        return thisWeapon.WeaponCost;
+        return thisWeaponData.WeaponCost;
     }
 
     public Sprite GetShopSprite() {
-        return thisWeapon.turretImage;
+        return thisWeaponData.turretImage;
     }
 
 }
