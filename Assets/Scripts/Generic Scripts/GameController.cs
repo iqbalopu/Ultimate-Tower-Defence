@@ -30,6 +30,7 @@ public class GameController : MenuUI
     public Action HideAllWeaponUI;
     public Action ExitGamePlay;
     public Action StartGamePlay;
+    public Action OnGameOver;
     private void Awake () {
         if(Instance == null) Instance = this;
     }
@@ -88,5 +89,12 @@ public class GameController : MenuUI
 
     public void QuitGame() {
         Application.Quit();
+    }
+
+    public void GameOver () {
+        if (OnGameOver != null) OnGameOver ();
+        //Show Game Over Scene
+        
+        //ExitGame ();
     }
 }

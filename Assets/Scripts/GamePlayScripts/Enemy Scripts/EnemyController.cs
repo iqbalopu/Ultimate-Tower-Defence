@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -188,6 +189,12 @@ public class EnemyController : MonoBehaviour {
             // CurrentHealth = enemyObject.Health;
             // this.SetHealthbarValue(1f);
             this.Attack();
+        }
+    }
+
+    private void OnTriggerStay (Collider other) {
+        if (other.CompareTag("Tower")) {
+            other.GetComponent<TownHall>().DecreaseTowerHealth(enemyObject.AttackDamage);
         }
     }
 
