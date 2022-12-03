@@ -45,4 +45,8 @@ public class Base : MonoBehaviour
     public void SetCurrentAssignedWeaponController(WeaponController currWeapon) {
         currWeaponController = currWeapon;
     }
+
+    public void HideAreaMeshForCurrentWeapon () {
+        if(currWeaponController != null) currWeaponController.HideWeaponArea();
+    }
 }

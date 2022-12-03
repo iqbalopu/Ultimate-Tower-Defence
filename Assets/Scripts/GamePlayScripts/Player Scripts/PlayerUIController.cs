@@ -25,6 +25,7 @@ public class PlayerUIController : MonoBehaviour
         controller_.HideWeaponUI += HideWeaponUI;
         controller_.ShowWeaponAction += ShowWeaponAction;
         GameController.Instance.StartGamePlay += StartGameUIUpdate;
+        GameController.Instance.OnGameOver += OnGameOver;
     }
 
     private void Start () {
@@ -63,6 +64,7 @@ public class PlayerUIController : MonoBehaviour
     
     private void HideWeaponUI () {
         WeaponUIParent.gameObject.SetActive(false);
+        WeaponBaseController.Instance.HideAllActiveWeaponArea ();
     }
 
     private void ShowScoreCard () {
@@ -86,6 +88,7 @@ public class PlayerUIController : MonoBehaviour
     }
     
     private void HideWeaponAction () {
+        WeaponBaseController.Instance.HideAllActiveWeaponArea ();
         WeaponActionUI.SetActive(false);
     }
     
@@ -99,6 +102,11 @@ public class PlayerUIController : MonoBehaviour
         ShowGemObject ();
         ShowScoreCard();
     }
-    
+
+    private void OnGameOver () {
+        HideAllWeaponUI ();
+        HideScoreCard();
+        HideGemObject();
+    }
     
 }

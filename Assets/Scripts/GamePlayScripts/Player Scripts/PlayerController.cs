@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
         playerInput_ = GetComponent<PlayerInputController> ();
         playerScore_ = GetComponent<PlayerScoreController> ();
         playerData_ = GetComponent<PlayerData> ();
+        GameController.Instance.OnGameOver += OnGameOver;
+        GameController.Instance.ExitGamePlay += OnExit;
     }
 
     private void Start() {
@@ -100,12 +102,12 @@ public class PlayerController : MonoBehaviour
             //Show the UI for weapon action
 
             if (ShowWeaponAction is not null) ShowWeaponAction ();
+            selectedBase.GetCurrentAssignedWeaponController ().ShowWeaponArea ();
         }
     }
 
     public void LevelUpSelectedWeapon() {
-        //here will be the code to levelup selected weapon
-
+        //here will be the code to level up selected weapon
         if (HideWeaponAction is not null) HideWeaponAction ();
     }
 
@@ -184,6 +186,14 @@ public class PlayerController : MonoBehaviour
 
     public void ResetPlayer() {
        if(ResetPlayerScore is not null) ResetPlayerScore ();
+    }
+
+    private void OnGameOver () {
+        ResetTurrets ();
+    }
+
+    private void OnExit () {
+        ResetTurrets ();
     }
 
 }

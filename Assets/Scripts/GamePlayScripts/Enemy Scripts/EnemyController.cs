@@ -97,7 +97,7 @@ public class EnemyController : MonoBehaviour {
     public void DecreaseHealth(int damage) {
         if(isDead) return;
         StopCoroutine(ReduceHealthBar());
-        this.SetHealthbarValue(Utills.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f));
+        this.SetHealthbarValue(Utills.ConvertRange(0f, enemyObject.Health, 0f, 1f, CurrentHealth));
         float remainingHealth = CurrentHealth - (float)damage;
         float previousHealth = CurrentHealth;
         if (remainingHealth <= 0) {
@@ -130,7 +130,7 @@ public class EnemyController : MonoBehaviour {
 
      IEnumerator ReduceHealthBar() {
         float currFillAmount = healthBar.fillAmount;
-        float updatedFillAmount = Utills.ConvertRange(CurrentHealth, enemyObject.Health, 0f, 1f, 0f);
+        float updatedFillAmount = Utills.ConvertRange(0f, enemyObject.Health, 0f, 1f, CurrentHealth);
         float difference = updatedFillAmount - currFillAmount;
         while(currFillAmount < updatedFillAmount) {
             yield return new WaitForEndOfFrame();
@@ -182,12 +182,7 @@ public class EnemyController : MonoBehaviour {
         }
 
         if (other.CompareTag("Tower")) {
-            // this.currentStatus = EnemyStatus.IDLE;
-            // ToggleEnemy(false);
-            // this.transform.localPosition = Vector3.zero;
-            // this.transform.localRotation = Quaternion.identity;
-            // CurrentHealth = enemyObject.Health;
-            // this.SetHealthbarValue(1f);
+            // navAgent.speed = 0f;
             this.Attack();
         }
     }

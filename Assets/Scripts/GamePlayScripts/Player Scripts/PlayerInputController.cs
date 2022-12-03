@@ -27,6 +27,7 @@ public class PlayerInputController : MonoBehaviour
         if (hit) {
             // Debug.LogError("PlayerGamePlayController :: hit name= "+hitInfo.transform.name);
             if (hitInfo.transform.gameObject.layer == BaseLayer) {
+                WeaponBaseController.Instance.HideAllActiveWeaponArea();
                 Base currBase = hitInfo.transform.GetComponent<Base>();
                 // Debug.LogError("OPU :: hit object= "+hitInfo.transform.name);
                 if (currBase is not null) {

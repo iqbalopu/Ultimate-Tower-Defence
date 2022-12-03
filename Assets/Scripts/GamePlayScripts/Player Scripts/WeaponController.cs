@@ -14,6 +14,7 @@ public class WeaponController : MonoBehaviour
     private WeaponAreaDetection thisArea_;
     private WeaponHealth thisHealth_;
     private WeaponPool m_ThisPool;
+    [SerializeField] private MeshRenderer thisAreaMesh;
 
     public Action Initialize;
     public Action Shoot;
@@ -90,6 +91,14 @@ public class WeaponController : MonoBehaviour
 
     public Sprite GetShopSprite() {
         return thisWeaponData.turretImage;
+    }
+
+    public void ShowWeaponArea () {
+        thisAreaMesh.enabled = true;
+    }
+
+    public void HideWeaponArea () {
+        thisAreaMesh.enabled = false;
     }
 
 }

@@ -78,12 +78,11 @@ public class GameController : MenuUI
         currentGameState = GameState.MENU;
     }
 
-    public void ExitGame() {
-        HideAllWeaponUI ();
-        if (ExitGamePlay is not null) ExitGamePlay ();
-        waveController.ResetWave();
-        waveController.ResetGame();
-        playerController.ResetTurrets();
+    public void ExitGame(bool fromGameOver = false) {
+        if (!fromGameOver) {
+            if(HideAllWeaponUI != null) HideAllWeaponUI ();
+            if (ExitGamePlay is not null) ExitGamePlay ();
+        }
         StartCoroutine(ShowMenu());
     }
 
@@ -93,8 +92,17 @@ public class GameController : MenuUI
 
     public void GameOver () {
         if (OnGameOver != null) OnGameOver ();
+        exitGameButton.interactable = false;
+        exitGameButton.gameObject.SetActive(false);
         //Show Game Over Scene
-        
+        ShowGameOver();
         //ExitGame ();
     }
+
+    public void ButtonPress_Menu () {
+        HideGameOver();
+        ExitGame(true);
+    }
+    
+    
 }

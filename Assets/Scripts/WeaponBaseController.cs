@@ -40,4 +40,12 @@ public class WeaponBaseController : MonoBehaviour
         return baseTransforms;
     }
 
+    public void HideAllActiveWeaponArea () {
+        for (int i = 0; i < weaponBases.Count; i++) {
+            if (!weaponBases[i].CanUseBase ()) {
+                weaponBases[i].HideAreaMeshForCurrentWeapon();
+            }
+        }
+    }
+
 }

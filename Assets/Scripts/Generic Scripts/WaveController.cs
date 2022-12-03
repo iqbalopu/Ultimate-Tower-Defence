@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ public class WaveController : MonoBehaviour {
 
     private void Awake () {
         GameController.Instance.StartGamePlay += StartGame;
+        GameController.Instance.OnGameOver += OnGameOver;
+        GameController.Instance.ExitGamePlay += OnExit;
     }
 
     // Start is called before the first frame update
@@ -39,7 +42,6 @@ public class WaveController : MonoBehaviour {
     IEnumerator ReleaseWave () {
         int temp = 0;
         while (temp<enemyPerWave) {
-            Debug.Log("Temp Value= "+temp);
             EnemyController eC = GetEnemy();
             if (eC == null) break;
             float tempRand = Random.Range (MinXValue, MaxXValue);
@@ -88,5 +90,15 @@ public class WaveController : MonoBehaviour {
 
     public void ResetGame () {
         CancelInvoke("Release");
+    }
+
+    private void OnGameOver () {
+        ResetWave ();
+        ResetGame ();
+    }
+
+    private void OnExit () {
+        ResetWave ();
+        ResetGame ();
     }
 }
